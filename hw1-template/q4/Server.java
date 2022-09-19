@@ -1,4 +1,43 @@
 public class Server {
+
+    private Socket socket = null; //Inititalizing Socket
+    private ServerSocket server = null; //Initializing Server
+    private DataInputStream in = null; //Initializing Input Stream
+
+    public Server(int port){
+        try {
+            server = new ServerSocket(port);
+            System.out.println("Server started");
+
+            System.out.println("Waiting for a client...");
+
+            socket = server.accept();
+            System.out.println("Client Accepted");
+
+            in = new DataInputStream( new BufferedInputStream(socket.getInputStream()));
+
+            String line = "";
+
+            while (!line.equals("Over")){
+                try {
+                    line = in.readUTF();
+                    System.out.println(line);
+                }
+                catch(IOException i){
+                    System.out.println(i);
+                }
+            }
+            System.out.println("Closing Connection");
+
+            socket.close();
+            in.close();
+
+        }
+        catch(IOExcpetion i){
+            System.out.println(i);
+        }
+
+    }
   public static void main (String[] args) {
     int tcpPort;
     int udpPort;
@@ -17,5 +56,6 @@ public class Server {
     // parse the inventory file
 
     // TODO: handle request from clients
-  }
+    
+}
 }
